@@ -38,7 +38,7 @@ func main() {
 
 	// Bind handlers
 	v1.Get("/images", handlers.ImageList)
-	v1.Post("/images", handlers.HueEdit)
+	v1.Post("/images", handlers.DownloadImageAndHueEdit)
 
 	// Setup static files
 	app.Static("/", "./static/public")

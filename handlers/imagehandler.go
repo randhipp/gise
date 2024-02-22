@@ -4,16 +4,25 @@ import (
 	"boilerplate/database"
 	"boilerplate/models"
 	"fmt"
+	"image"
 	"log"
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 
+	"github.com/anthonynsimon/bild/adjust"
+	"github.com/anthonynsimon/bild/imgio"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/utils"
 )
 
-func HueEdit(c *fiber.Ctx) error {
+// NotFound returns custom 404 page
+func NotFound(c *fiber.Ctx) error {
+	return c.Status(404).SendFile("./static/private/404.html")
+}
+
+func DownloadImageAndHueEdit(c *fiber.Ctx) error {
 
 	image := &models.Image{
 		// Note: when writing to external database,
@@ -25,8 +34,18 @@ func HueEdit(c *fiber.Ctx) error {
 	database.Insert(image)
 
 	filetype := FileDownloader(image.Url)
+
 	switch filetype {
 	case "image/jpeg", "image/jpg":
+		err := ProcessHueEdit(image.Url, image.Hue)
+
+		if err != nil {
+			c.Status(fiber.ErrUnprocessableEntity.Code).JSON(fiber.Map{
+				"success":         false,
+				"responseMessage": "error on editing image",
+			})
+		}
+
 		return c.JSON(fiber.Map{
 			"success": true,
 			"image":   image,
@@ -37,11 +56,6 @@ func HueEdit(c *fiber.Ctx) error {
 			"responseMessage": "image file not supported",
 		})
 	}
-}
-
-// NotFound returns custom 404 page
-func NotFound(c *fiber.Ctx) error {
-	return c.Status(404).SendFile("./static/private/404.html")
 }
 
 func ImageList(c *fiber.Ctx) error {
@@ -100,4 +114,22 @@ func FileDownloader(url string) string {
 	fmt.Println(filetype)
 
 	return filetype
+}
+
+func ProcessHueEdit(path string, hue string) error {
+	filename := filepath.Base(path)
+	img, err := imgio.Open("./data/images/inputs/" + filename)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+	var edited *image.RGBA
+	if i, err := strconv.Atoi(hue); err == nil {
+		edited = adjust.Hue(img, i)
+	}
+	if err := imgio.Save("./data/images/outputs/"+filename, edited, imgio.PNGEncoder()); err != nil {
+		fmt.Println(err)
+		return err
+	}
+	return err
 }

@@ -24,12 +24,16 @@ func NotFound(c *fiber.Ctx) error {
 
 func DownloadImageAndHueEdit(c *fiber.Ctx) error {
 
+	path := utils.CopyString(c.FormValue("image"))
+	fname := filepath.Base(path)
+
 	image := &models.Image{
 		// Note: when writing to external database,
 		// we can simply use - Name: c.FormValue("image")
-		Name: utils.CopyString(c.FormValue("image")),
-		Url:  utils.CopyString(c.FormValue("image")),
-		Hue:  utils.CopyString(c.FormValue("hue")),
+		Name:   utils.CopyString(c.FormValue("image")),
+		Url:    utils.CopyString(c.FormValue("image")),
+		Hue:    utils.CopyString(c.FormValue("hue")),
+		Result: utils.CopyString(c.FormValue("hue")) + fname,
 	}
 	database.Insert(image)
 
@@ -37,7 +41,7 @@ func DownloadImageAndHueEdit(c *fiber.Ctx) error {
 
 	switch filetype {
 	case "image/jpeg", "image/jpg":
-		err := ProcessHueEdit(image.Url, image.Hue)
+		err := ProcessHueEdit(image.Url, image.Hue, image.Result)
 
 		if err != nil {
 			c.Status(fiber.ErrUnprocessableEntity.Code).JSON(fiber.Map{
@@ -116,7 +120,7 @@ func FileDownloader(url string) string {
 	return filetype
 }
 
-func ProcessHueEdit(path string, hue string) error {
+func ProcessHueEdit(path string, hue string, result string) error {
 	filename := filepath.Base(path)
 	img, err := imgio.Open("./data/images/inputs/" + filename)
 	if err != nil {
@@ -127,9 +131,17 @@ func ProcessHueEdit(path string, hue string) error {
 	if i, err := strconv.Atoi(hue); err == nil {
 		edited = adjust.Hue(img, i)
 	}
-	if err := imgio.Save("./data/images/outputs/"+filename, edited, imgio.PNGEncoder()); err != nil {
+
+	err = os.Remove("./data/images/outputs/" + filename)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	if err := imgio.Save("./data/images/outputs/"+result, edited, imgio.JPEGEncoder(90)); err != nil {
 		fmt.Println(err)
 		return err
 	}
+	err = os.Remove("./data/images/inputs/" + filename)
+
 	return err
 }

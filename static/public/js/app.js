@@ -8,9 +8,9 @@ const listImages = async () => {
 	const images = data.images.reverse();
 
 	for (let index = 0; index < images.length; index++) {
-		const child = document.createElement('li');
+		const child = document.createElement('img');
 		child.className = 'list-group-item';
-		child.innerText = images[index].url + " " + images[index].hue;
+		child.src = "/outputs/" + images[index].result + "?" + (new Date()).getTime();
 
 		container.appendChild(child);
 	}
@@ -49,7 +49,7 @@ $('#add_image').addEventListener('click', async (e) => {
 
 	const child = document.createElement('img');
 	child.className = 'list-group-item';
-	child.src = "/outputs/" + image.split('/').pop();
+	child.src = "/outputs/" + data.image.result + "?" + (new Date()).getTime();
 
 	container.insertBefore(child, container.firstChild);
 

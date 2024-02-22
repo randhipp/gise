@@ -1,29 +1,29 @@
 const $ = (selector) => document.querySelector(selector);
-const container = $('#users');
-const API_ENDPOINT = '/api/v1/users';
+const container = $('#images');
+const API_ENDPOINT = '/api/v1/images';
 
-const listUsers = async () => {
+const listImages = async () => {
 	const response = await fetch(API_ENDPOINT);
 	const data = await response.json();
-	const users = data.users.reverse();
+	const images = data.images.reverse();
 
-	for (let index = 0; index < users.length; index++) {
+	for (let index = 0; index < images.length; index++) {
 		const child = document.createElement('li');
 		child.className = 'list-group-item';
-		child.innerText = users[index].name;
+		child.innerText = images[index].name;
 
 		container.appendChild(child);
 	}
 };
 
-$('#add_user').addEventListener('click', async (e) => {
+$('#add_image').addEventListener('click', async (e) => {
 	e.preventDefault();
-	const user = $('#user').value;
+	const image = $('#image').value;
 
-	if (!user) return;
+	if (!image) return;
 
 	const form = new FormData();
-	form.append('user', user);
+	form.append('image', image);
 
 	const response = await fetch(API_ENDPOINT, {
 		method: 'POST',
@@ -34,11 +34,11 @@ $('#add_user').addEventListener('click', async (e) => {
 
 	const child = document.createElement('li');
 	child.className = 'list-group-item';
-	child.innerText = data.user.name;
+	child.innerText = data.image.name;
 
 	container.insertBefore(child, container.firstChild);
 
-	$('#user').value = '';
+	$('#image').value = '';
 });
 
-document.addEventListener('DOMContentLoaded', listUsers);
+document.addEventListener('DOMContentLoaded', listImages);

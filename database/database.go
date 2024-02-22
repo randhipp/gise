@@ -7,22 +7,22 @@ import (
 )
 
 var (
-	db []*models.User
+	db []*models.Image
 	mu sync.Mutex
 )
 
 // Connect with database
 func Connect() {
-	db = make([]*models.User, 0)
+	db = make([]*models.Image, 0)
 	fmt.Println("Connected with Database")
 }
 
-func Insert(user *models.User) {
+func Insert(image *models.Image) {
 	mu.Lock()
-	db = append(db, user)
+	db = append(db, image)
 	mu.Unlock()
 }
 
-func Get() []*models.User {
+func Get() []*models.Image {
 	return db
 }

@@ -37,8 +37,8 @@ func main() {
 	v1 := app.Group("/api/v1")
 
 	// Bind handlers
-	v1.Get("/users", handlers.UserList)
-	v1.Post("/users", handlers.UserCreate)
+	v1.Get("/images", handlers.ImageList)
+	v1.Post("/images", handlers.HueEdit)
 
 	// Setup static files
 	app.Static("/", "./static/public")

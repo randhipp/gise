@@ -1,6 +1,6 @@
 package models
 
-// User model
-type User struct {
+// Image model
+type Image struct {
 	Name string `json:"name"`
 }

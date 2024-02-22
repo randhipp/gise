@@ -14,6 +14,8 @@ func HueEdit(c *fiber.Ctx) error {
 		// Note: when writing to external database,
 		// we can simply use - Name: c.FormValue("image")
 		Name: utils.CopyString(c.FormValue("image")),
+		Url:  utils.CopyString(c.FormValue("image")),
+		Hue:  utils.CopyString(c.FormValue("hue")),
 	}
 	database.Insert(image)
 

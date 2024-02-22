@@ -14,18 +14,18 @@
 				<img src="/img/logo.svg" class="img-fluid" width="300px" />
 			</div>
 			<h4>Add image</h4>
-			<form class="input-group mb-3">
+			<form class="input mb-3">
 				<input
 					type="text"
 					class="form-control"
 					placeholder="image"
 					id="image"
-				/>
-				<div class="input-group-append">
-					<button class="btn btn-outline-primary" type="submit" id="add_image">
-						Add Image
-					</button>
-				</div>
+				/></br>
+				Edit Hue (between -100 and 100):</br>
+				<input type="range" id="hue" name="hue" min="-100" max="100" default="0"></br>
+				<button class="btn btn-outline-primary" type="submit" id="add_image">
+					Add Image
+				</button>
 			</form>
 			<h4>Images</h4>
 			<ul class="list-group" id="images"></ul>

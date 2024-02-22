@@ -1,2 +1,5 @@
 data/images/inputs/*
 data/images/outputs/*
+.DS_Store
+data/.DS_Store
+*/.DS_Store

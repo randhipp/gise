@@ -4,7 +4,7 @@ using boilerplate from : [gofiber-boilerplate](https://github.com/gofiber/boiler
 
 ### Demo
 
-<video src='/demo/demo.mp4' width=480></video>
+https://github.com/randhipp/gise/assets/25372728/db3b564d-c313-46bc-ae5b-803c03c4d926
 
 ## Development
 

@@ -33,10 +33,19 @@ $('#add_image').addEventListener('click', async (e) => {
 		body: form,
 	});
 
+	console.log(response.status);
+
+	
+
 	for (var pair of form.entries()) {
 		console.log(pair[0]+ ', ' + pair[1]); 
 	}
 	const data = await response.json();
+
+	if(response.status !== 200) {
+		alert(data.responseMessage);
+		return;
+	}
 
 	const child = document.createElement('li');
 	child.className = 'list-group-item';

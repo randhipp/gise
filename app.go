@@ -42,6 +42,7 @@ func main() {
 
 	// Setup static files
 	app.Static("/", "./static/public")
+	app.Static("/outputs", "./data/images/outputs")
 
 	// Handle not founds
 	app.Use(handlers.NotFound)

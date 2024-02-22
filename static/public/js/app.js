@@ -47,9 +47,9 @@ $('#add_image').addEventListener('click', async (e) => {
 		return;
 	}
 
-	const child = document.createElement('li');
+	const child = document.createElement('img');
 	child.className = 'list-group-item';
-	child.innerText = data.image.url + " " + data.image.hue;
+	child.src = "/outputs/" + image.split('/').pop();
 
 	container.insertBefore(child, container.firstChild);
 

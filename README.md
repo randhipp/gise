@@ -1,6 +1,10 @@
 # Go Image Simple Editor App
 
-using boilerplate from : [gofiber-boilerplate](https://github.com/gofiber/boilerplate.git)\
+using boilerplate from : [gofiber-boilerplate](https://github.com/gofiber/boilerplate.git)
+
+### Demo
+
+<video src='/demo/demo.mp4' width=480/>
 
 ## Development
 
